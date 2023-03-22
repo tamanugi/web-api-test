@@ -4,7 +4,8 @@
 SpringBoot と Kotlin または Java で REST API の実装をお願いします。  
 どちらの言語を選んでいただいても大丈夫ですが Kotlin の使用を推奨します。    
 制限時間内に全ての API を作り切ることは不可能なので、以下のタスクのうち何をやっていただいても問題ありません。  
-また、全ての作業を行う必要もありません。どのタスクを選んでなぜそうしたのかは後ほどご回答ください。
+また、全ての作業を行う必要もありません。どのタスクを選んでなぜそうしたのかは後ほどご回答ください。  
+テスト時間は4時間程度を目安にしています。
 
 1. openAPI 形式で API 定義の作成
 2. ER図の作成
@@ -21,7 +22,9 @@ SpringBoot と Kotlin または Java で REST API の実装をお願いします
 - Exposed
   - Exposed のテーブル定義クラスを事前に作成済みです（UserTable.kt, PaymentTable.kt）
   - また、Exposed の実装サンプルを UserRepository.kt に記載しておりますので、ご参照ください。
+  - Exposed 以外のライブラリを使っていただいても問題ありません。
 - Flyway
+- 上記以外に必要なライブラリは自由に追加していただいて構いません
 
 ## データベースとテーブル
 - MySQL
@@ -41,3 +44,7 @@ SpringBoot と Kotlin または Java で REST API の実装をお願いします
    2. status は 0 で登録する
    3. payments 登録時に payment_bank_accounts も同時にデータを登録する
 5. payments テーブルを期間指定で取得し、amount の合計を取得する API
+
+## その他
+- controller, service, repository でパッケージを分けていますが、パッケージの構成は自由ですので、自由に追加、変更して問題ありません
+- 
