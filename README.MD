@@ -42,8 +42,6 @@ SpringBoot と Kotlin または Java で REST API の実装をお願いします
 
 ## 作っていただきたい API
 
-どの API を作っていただいても大丈夫です。
-
 1. user_id を指定して users テーブルから取得する API（参照系）
 2. user の情報を送信して users テーブルに登録する API（登録系）
 3. users テーブルの情報を指定した件数分、かつ、ページングを考慮して取得する API（参照系）
