@@ -35,6 +35,16 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    runtimeOnly("mysql:mysql-connector-java")
+
+    // exposed
+    val exposedVersion = "0.39.2"
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+    implementation("org.jetbrains.exposed:spring-transaction:$exposedVersion")
+
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.projectlombok:lombok")
@@ -54,8 +64,8 @@ tasks.withType<Test> {
 }
 
 flyway {
-    url = "webapi-test-db"
+    url = "jdbc:mysql://localhost:3316/shiharai"
     user = "testuser"
     password = "password"
-    locations = arrayOf("filesystem:../database/src/migration/sql", "filesystem:../database/src/migration/seed")
+    locations = arrayOf("filesystem:./database/src/migration")
 }

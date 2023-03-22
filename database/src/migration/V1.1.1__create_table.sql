@@ -18,8 +18,6 @@ create table users
     name            varchar(255) not null comment '氏名',
     email           varchar(255) not null comment 'メールアドレス',
     password        varchar(255) not null comment 'パスワード',
-    salt            varchar(255) not null comment 'ソルト',
-    verify_token    varchar(255) not null unique key comment '認証用のトークン',
     verified        bool         not null default false comment '認証済みフラグ。true の場合は認証済み。',
     created_at      timestamp    not null default current_timestamp,
     updated_at      timestamp    not null default current_timestamp on update current_timestamp
@@ -29,14 +27,15 @@ create table users
 create table payments
 (
     id                       bigint unsigned auto_increment primary key,
-    user_id                  bigint unsigned not null,
-    amount                   int             not null,
-    fee                      int             not null,
-    tax_rate                 int             not null,
-    billing_amount           int             not null,
-    transfer_date            date            not null,
-    uploaded_date            date            not null,
-    status                   int             not null,
+    user_id                  bigint unsigned not null comment 'ユーザー ID',
+    amount                   int             not null comment '金額',
+    fee                      int             not null comment '手数料',
+    fee_rate                 decimal(5, 5)   not null comment '手数料率',
+    tax_rate                 int             not null comment '消費税率',
+    billing_amount           int             not null comment '請求金額',
+    transfer_date            date            not null comment '振込日',
+    uploaded_date            date            not null comment 'アップロード日',
+    status                   int             not null comment 'ステータス, 0: 未処理, 1: 処理中, 2: 処理済み, 99: エラー',
     created_at               timestamp       not null default current_timestamp,
     updated_at               timestamp       not null default current_timestamp on update current_timestamp
 );
