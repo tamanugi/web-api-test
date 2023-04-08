@@ -2,9 +2,9 @@
 
 ## はじめに
 
-SpringBoot と Kotlin または Java で REST API の実装をお願いします。  
-テスト時間は4時間程度を目安にしています。  
-どちらの言語を選んでいただいても大丈夫ですが Kotlin の使用を推奨します。    
+SpringBoot または Ktor で REST API の実装をお願いします。   
+Kotlin の使用を推奨しますが、Java で実装していただいても問題ありません。  
+テスト時間は4時間程度を目安にしています。   
 
 制限時間内に全ての API を作り切ることは難しいと思いますので、  
 参照系の API と登録系の API を最低1つずつ作成してください。  
@@ -21,11 +21,13 @@ SpringBoot と Kotlin または Java で REST API の実装をお願いします
 
 ## インストール済みのライブラリ
 
-- SpringBoot 2.7.6
+- SpringBoot
 - SpringBoot starter test
 - SpringBoot Exposed
 - Spring JDBC
 - Spring Web
+- Ktor
+- Koin
 - Exposed
     - Exposed のテーブル定義クラスを事前に作成済みです（UserTable.kt, PaymentTable.kt）
     - また、Exposed の実装サンプルを UserRepository.kt に記載しておりますので、ご参照ください。
@@ -54,4 +56,5 @@ SpringBoot と Kotlin または Java で REST API の実装をお願いします
 
 ## その他
 
-- controller, service, repository でパッケージを分けていますが、パッケージの構成は自由ですので、自由に追加、変更して問題ありません
+- controller, service, repository でパッケージを分けていますが、パッケージの構成は自由です
+  - パッケージの構成は自由に追加、変更していただいて問題ありません
