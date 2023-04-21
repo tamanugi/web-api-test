@@ -2,7 +2,9 @@ package com.example.webapitest
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.ktor.server.application.Application
+import io.ktor.server.application.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 
 fun main(args: Array<String>) {
@@ -11,6 +13,12 @@ fun main(args: Array<String>) {
 
 fun Application.module() {
     connectDB()
+
+    routing {
+        get("/hello") {
+            call.respondText("hello world")
+        }
+    }
 }
 
 private fun connectDB() {
