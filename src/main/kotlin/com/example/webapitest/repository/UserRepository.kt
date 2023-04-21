@@ -1,13 +1,16 @@
 package com.example.webapitest.repository
 
 import com.example.webapitest.model.User
+import com.example.webapitest.repository.db.DatabaseFactory.dbQuery
 import com.example.webapitest.repository.db.UserEntity
 import com.example.webapitest.repository.db.toUser
 
 class UserRepository {
 
-    fun getByOrNull(id: Long): User? {
-        return UserEntity.findById(id)?.toUser()
+    suspend fun getByOrNull(id: Long): User? {
+        return dbQuery {
+            UserEntity.findById(id)?.toUser()
+        }
     }
 
     fun list(): List<User> {

@@ -1,5 +1,7 @@
 package com.example.webapitest.routes
 
+import com.example.webapitest.service.UserService
+import io.ktor.http.*
 import io.ktor.resources.*
 import io.ktor.server.resources.*
 import io.ktor.server.resources.post
@@ -23,13 +25,17 @@ class UserResource(val page: Int = 1, val limit: Int = 10) {
 // -------
 // routing
 // -------
-fun Route.userRoutes() {
+fun Route.userRoutes(
+    // TODO: DI by koin
+    userService: UserService) {
+
     get<UserResource> {
         call.respondText("implement me")
     }
 
     get<UserResource.Id> {
-        call.respondText("implement me ${it.id}")
+        val user = userService.findUserById(it.id)
+        call.respond(user ?: HttpStatusCode.NotFound)
     }
 
     post<UserResource.New> {

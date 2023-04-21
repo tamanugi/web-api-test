@@ -1,5 +1,6 @@
 package com.example.webapitest
 
+import com.example.webapitest.plugins.configureDatabase
 import com.example.webapitest.plugins.configureRouting
 import com.example.webapitest.plugins.configureSerialization
 import com.zaxxer.hikari.HikariConfig
@@ -14,22 +15,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    connectDB()
-
+    configureDatabase()
     configureSerialization()
     configureRouting()
-}
-
-private fun connectDB() {
-    val hikariConfig = HikariConfig()
-    hikariConfig.driverClassName = "com.mysql.cj.jdbc.Driver"
-    hikariConfig.jdbcUrl = "jdbc:mysql://localhost:3316/shiharai?allowPublicKeyRetrieval=true&useSSL=false"
-    hikariConfig.username = "testuser"
-    hikariConfig.password = "password"
-    hikariConfig.maximumPoolSize = 3
-    hikariConfig.isAutoCommit = false
-    hikariConfig.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
-
-    val dataSource = HikariDataSource(hikariConfig)
-    Database.connect(dataSource)
 }
