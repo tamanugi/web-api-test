@@ -1,5 +1,7 @@
 package com.example.webapitest
 
+import com.example.webapitest.plugins.configureRouting
+import com.example.webapitest.plugins.configureSerialization
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -14,11 +16,8 @@ fun main(args: Array<String>) {
 fun Application.module() {
     connectDB()
 
-    routing {
-        get("/hello") {
-            call.respondText("hello world")
-        }
-    }
+    configureSerialization()
+    configureRouting()
 }
 
 private fun connectDB() {
