@@ -1,30 +1,45 @@
 package com.example.webapitest.repository
 
 import com.example.webapitest.model.User
+import com.example.webapitest.repository.db.DatabaseFactory.dbQuery
 import com.example.webapitest.repository.db.UserEntity
 import com.example.webapitest.repository.db.toUser
-import org.springframework.stereotype.Repository
+import org.jetbrains.exposed.sql.transactions.transaction
 
-@Repository
 class UserRepository {
 
-    fun getByOrNull(id: Long): User? {
-        return UserEntity.findById(id)?.toUser()
+    suspend fun getByOrNull(id: Long): User? {
+        return dbQuery {
+            UserEntity.findById(id)?.toUser()
+        }
     }
 
-    fun list(): List<User> {
-        return UserEntity.all().map { it.toUser() }
+    suspend fun list(limit: Int, offset: Long): List<User> {
+        return dbQuery {
+            UserEntity.all()
+            .limit(limit, offset=offset)
+            .map { it.toUser() }
+        }
     }
 
     fun insert(user: User): User {
-        val entity = UserEntity.new {
-            organizationId = user.organizationId
-            name = user.name
-            email = user.email
-            password = user.password
-            verified = user.verified
+        return transaction {
+            val entity = UserEntity.new {
+                organizationId = user.organizationId
+                name = user.name
+                email = user.email
+                password = user.password
+                verified = user.verified
+            }
+
+            // FIXME: insert した User（not null であること）をデータベースから取得して返却すること
+            entity.toUser()
         }
-        // FIXME: insert した User（not null であること）をデータベースから取得して返却すること
-        return entity.toUser()
+    }
+
+    suspend fun count() : Long {
+        return dbQuery {
+            UserEntity.count()
+        }
     }
 }
