@@ -59,6 +59,13 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+buildscript {
+    dependencies {
+        classpath("org.flywaydb:flyway-mysql:9.8.3")
+        classpath("mysql:mysql-connector-java:8.0.33")
+    }
+}
+
 flyway {
     url = "jdbc:mysql://localhost:3316/shiharai"
     user = "testuser"
