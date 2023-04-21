@@ -1,5 +1,6 @@
 package com.example.webapitest.routes
 
+import com.example.webapitest.model.User
 import com.example.webapitest.service.UserService
 import io.ktor.http.*
 import io.ktor.resources.*
@@ -8,6 +9,7 @@ import io.ktor.server.resources.post
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 
 // -------
 // resource
@@ -39,6 +41,9 @@ fun Route.userRoutes(
     }
 
     post<UserResource.New> {
-        call.respondText("implement me")
+        val user = call.receive<User>()
+        val createdUser = userService.createUser(user)
+        call.response.status(HttpStatusCode.Created)
+        call.respond(mapOf("id" to createdUser.id))
     }
 }

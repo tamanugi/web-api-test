@@ -82,4 +82,35 @@ class UserRouteTest {
         val res1 = client.get("/users/9999")
         assertEquals(HttpStatusCode.NotFound, res1.status)
     }
+
+    @Test
+    fun `ユーザー登録_登録できること`() = testApplication {
+
+        val client = createClient {
+            install(ContentNegotiation) {
+                gson()
+            }
+        }
+
+        val response = client.post("/users") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                User(
+                    id = null,
+                    organizationId = 1L,
+                    name = "ふが山ふが太郎",
+                    email = "hoge@example.com",
+                    password = "password",
+                    verified = true
+                )
+            )
+        }
+
+        assertEquals(HttpStatusCode.Created, response.status)
+
+        val res: Map<String, String> = response.body()
+        val userId = res.get("id")
+        val user: User = client.get("/users/${userId}").body()
+        assertEquals("ふが山ふが太郎", user.name)
+    }
 }

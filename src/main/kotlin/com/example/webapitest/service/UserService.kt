@@ -19,4 +19,8 @@ class UserService(
             )
         }
     }
+
+    fun createUser(user: User): User {
+        return userRepository.insert(user)
+    }
 }
