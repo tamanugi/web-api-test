@@ -49,14 +49,11 @@ dependencies {
     val hikaricpVersion = "5.0.1"
     implementation("com.zaxxer:HikariCP:$hikaricpVersion")
 
-    testImplementation("io.insert-koin:koin-test-junit5:$koinVersion")
-    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation("io.ktor:ktor-server-test-host-jvm:2.2.4")
+    testImplementation("io.ktor:ktor-server-tests-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-}
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+    val kotlinVersion="1.8.20"
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 }
 
 buildscript {
@@ -64,6 +61,10 @@ buildscript {
         classpath("org.flywaydb:flyway-mysql:9.8.3")
         classpath("mysql:mysql-connector-java:8.0.33")
     }
+}
+
+kotlin {
+    jvmToolchain(11)
 }
 
 flyway {
