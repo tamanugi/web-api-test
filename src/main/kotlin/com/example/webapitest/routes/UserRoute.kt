@@ -10,6 +10,15 @@ import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
+import kotlin.math.max
+
+// -------
+// response
+// -------
+data class MultipleUserResponse(
+    val users: List<User>,
+    val count: Long
+)
 
 // -------
 // resource
@@ -32,7 +41,9 @@ fun Route.userRoutes(
     userService: UserService) {
 
     get<UserResource> {
-        call.respondText("implement me")
+        val users = userService.findUsers(page=it.page, limit=it.limit)
+        val count = userService.count()
+        call.respond(MultipleUserResponse(users = users, count = count) )
     }
 
     get<UserResource.Id> {

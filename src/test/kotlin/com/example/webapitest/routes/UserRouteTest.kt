@@ -113,4 +113,62 @@ class UserRouteTest {
         val user: User = client.get("/users/${userId}").body()
         assertEquals("ふが山ふが太郎", user.name)
     }
+
+    @Test
+    fun `ユーザー一覧取得_ページングを考慮`() = testApplication {
+        val client = createClient {
+            install(ContentNegotiation) {
+                gson()
+            }
+        }
+
+        transaction {
+            // Userを100件作成
+            for (i in 1..100) {
+                UserRepository().insert(User(
+                    id = null,
+                    organizationId = 1L,
+                    name = "ほげ山ほげ太郎${i}号",
+                    email = "hoge${i}@example.com",
+                    password = "password",
+                    verified = true
+                ))
+            }
+
+        }
+
+
+        val response1: MultipleUserResponse = client.get("/users?limit=20").body()
+
+        assertEquals(100, response1.count)
+        assertEquals(20, response1.users.size)
+        assertEquals("ほげ山ほげ太郎1号", response1.users.first().name)
+        assertEquals("ほげ山ほげ太郎20号", response1.users.last().name)
+
+
+        val response2: MultipleUserResponse = client.get("/users?page=2&limit=20").body()
+
+        assertEquals(100, response2.count)
+        assertEquals(20, response2.users.size)
+        assertEquals("ほげ山ほげ太郎21号", response2.users.first().name)
+        assertEquals("ほげ山ほげ太郎40号", response2.users.last().name)
+
+        val response3: MultipleUserResponse = client.get("/users?page=-100&limit=20").body()
+
+        assertEquals(100, response3.count)
+        assertEquals(20, response3.users.size)
+        assertEquals("ほげ山ほげ太郎1号", response3.users.first().name)
+        assertEquals("ほげ山ほげ太郎20号", response3.users.last().name)
+
+        val response4: MultipleUserResponse = client.get("/users?page=100&limit=20").body()
+
+        assertEquals(100, response4.count)
+        assertEquals(0, response4.users.size)
+
+        val response5: MultipleUserResponse = client.get("/users?page=1&limit=-20").body()
+
+        assertEquals(100, response5.count)
+        assertEquals(0, response5.users.size)
+    }
+
 }

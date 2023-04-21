@@ -14,8 +14,12 @@ class UserRepository {
         }
     }
 
-    fun list(): List<User> {
-        return UserEntity.all().map { it.toUser() }
+    suspend fun list(limit: Int, offset: Long): List<User> {
+        return dbQuery {
+            UserEntity.all()
+            .limit(limit, offset=offset)
+            .map { it.toUser() }
+        }
     }
 
     fun insert(user: User): User {
@@ -30,6 +34,12 @@ class UserRepository {
 
             // FIXME: insert した User（not null であること）をデータベースから取得して返却すること
             entity.toUser()
+        }
+    }
+
+    suspend fun count() : Long {
+        return dbQuery {
+            UserEntity.count()
         }
     }
 }
