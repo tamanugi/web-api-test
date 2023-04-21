@@ -4,10 +4,8 @@ import com.example.webapitest.model.Payment
 import com.example.webapitest.repository.db.*
 import com.example.webapitest.repository.db.DatabaseFactory.dbQuery
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.springframework.stereotype.Repository
 import java.time.LocalDate
 
-@Repository
 class PaymentRepository {
 
     suspend fun sumAmount(fromDate: LocalDate, toDate: LocalDate): Int {

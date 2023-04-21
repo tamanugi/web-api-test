@@ -13,6 +13,13 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.time.LocalDate
 
+
+// -------
+// request
+// -------
+data class RegisterPayment(val amount: Int)
+
+
 // -------
 // response
 // -------
@@ -48,9 +55,9 @@ fun Route.paymentRoute(
     }
 
     post<PaymentResource.New> {
-//        val user = call.receive<User>()
-//        val createdUser = userService.createUser(user)
-//        call.response.status(HttpStatusCode.Created)
-//        call.respond(mapOf("id" to createdUser.id))
+        val registerPayment = call.receive<RegisterPayment>()
+        val payment = paymentService.register(amount = registerPayment.amount)
+        call.response.status(HttpStatusCode.Created)
+        call.respond(mapOf("payment_id" to payment.id))
     }
 }

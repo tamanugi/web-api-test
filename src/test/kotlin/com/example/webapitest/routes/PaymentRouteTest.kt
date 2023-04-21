@@ -2,8 +2,12 @@ package com.example.webapitest.routes
 import io.ktor.client.request.*
 
 import com.example.webapitest.model.Payment
+import com.example.webapitest.model.User
 import com.example.webapitest.repository.PaymentRepository
 import com.example.webapitest.repository.db.DatabaseFactory
+import com.example.webapitest.repository.db.PaymentBankAccountsEntity
+import com.example.webapitest.repository.db.PaymentBankAccountsTable
+import com.example.webapitest.repository.db.PaymentEntity
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
@@ -87,5 +91,38 @@ class PaymentRouteTest {
             uploadedDate = LocalDate.now(),
             status = 0,
         )
+    }
+
+
+    @Test
+    fun `Payment登録API`() = testApplication {
+        val client = createClient {
+            install(ContentNegotiation) {
+                gson()
+            }
+        }
+
+        val response = client.post("/payments") {
+            contentType(ContentType.Application.Json)
+            setBody( RegisterPayment(amount = 10000) )
+        }
+
+        assertEquals(HttpStatusCode.Created, response.status)
+
+        val resJson: Map<String, String> = response.body()
+
+        val paymentId =  resJson["payment_id"]?.toLong() ?: 0
+
+        // 登録されているか直接DBで確認
+        transaction {
+
+            val payment = PaymentEntity.get(paymentId)
+            assertEquals(11400, payment.billingAmount)
+            assertEquals(0, payment.status)
+
+            // payment_bank_accountsも登録されているか
+            val pba = PaymentBankAccountsEntity.find { PaymentBankAccountsTable.payment_id eq paymentId }.first()
+            assertEquals(paymentId, pba.payment_id)
+        }
     }
 }
