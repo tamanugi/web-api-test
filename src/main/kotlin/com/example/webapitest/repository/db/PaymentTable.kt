@@ -1,5 +1,6 @@
 package com.example.webapitest.repository.db
 
+import com.example.webapitest.model.Payment
 import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.javatime.date
@@ -31,3 +32,15 @@ class PaymentEntity(id: EntityID<Long>) : LongEntityBase(id) {
     override var createdAt by PaymentTable.createdAt
     override var updatedAt by PaymentTable.updatedAt
 }
+fun PaymentEntity.toPayment() = Payment(
+    id = this.id.value,
+    userId = this.userId,
+    amount = this.amount,
+    fee = this.fee,
+    feeRate = this.feeRate,
+    taxRate = this.taxRate,
+    billingAmount = this.billingAmount,
+    transferDate = this.transferDate,
+    uploadedDate = this.uploadedDate,
+    status = this.status,
+)
